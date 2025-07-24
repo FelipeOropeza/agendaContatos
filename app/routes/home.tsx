@@ -1,5 +1,6 @@
 import type { Route } from "./+types/home";
 import { useNavigate } from "react-router";
+import ContatoList from "../components/ContatoList";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,15 +17,20 @@ export default function Home() {
   }
 
   return (
-    <>
-      <div>Welcome to the Agenda!</div>
-      <button
-        className="btn btn-primary"
-        type="button"
-        onClick={handleCreateContact}
-      >
-        Create Contact
-      </button>
-    </>
+    <div className="max-w-2xl mx-auto px-4 py-6">
+      <h1 className="text-2xl font-bold mb-4 text-center">Agenda de Contatos</h1>
+
+      <div className="flex justify-center mb-4">
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          type="button"
+          onClick={handleCreateContact}
+        >
+          Criar Contato
+        </button>
+      </div>
+
+      <ContatoList />
+    </div>
   );
 }
