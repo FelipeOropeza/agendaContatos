@@ -15,3 +15,16 @@ export async function listarContatos(): Promise<Contato[]> {
   const json = await response.json();
   return json.data;
 }
+
+export async function inserirContato(contato: Contato): Promise<Contato> {
+  const response = await fetch(`${API_URL}/contatos`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(contato),
+  });
+  if (!response.ok) throw new Error("Erro ao inserir contato.");
+  const json = await response.json();
+  return json.data;
+}

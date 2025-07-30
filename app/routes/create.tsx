@@ -1,4 +1,5 @@
 import type { Route } from "./+types/home";
+import FormCreate from "../components/FormCreate";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -8,5 +9,5 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Create() {
-  return <div>Create a new contact</div>;
+  return <FormCreate />;
 }
