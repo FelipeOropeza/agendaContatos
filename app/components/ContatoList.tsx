@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { listarContatos, excluirContato, type Contato } from "../api/contato";
 
 export default function ContatoList() {
+  const CAMINHO_FOTO = import.meta.env.VITE_CAMINHO_FOTO;
+
   const [contatos, setContatos] = useState<Contato[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +38,7 @@ export default function ContatoList() {
         >
           {contato.foto ? (
             <img
-              src={contato.foto}
+              src={`${CAMINHO_FOTO}${contato.foto}`}
               alt={`Foto de ${contato.nome}`}
               className="w-16 h-16 rounded-full object-cover border"
             />
@@ -60,7 +62,10 @@ export default function ContatoList() {
               <button className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
                 Editar
               </button>
-              <button onClick={() => handleDelete(contato.id)} className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+              <button
+                onClick={() => handleDelete(contato.id)}
+                className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+              >
                 Excluir
               </button>
             </div>
