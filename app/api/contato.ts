@@ -16,15 +16,19 @@ export async function listarContatos(): Promise<Contato[]> {
   return json.data;
 }
 
-export async function inserirContato(contato: Contato): Promise<Contato> {
+export async function inserirContato(data: FormData): Promise<Contato> {
   const response = await fetch(`${API_URL}/contatos`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(contato),
+    body: data,
   });
   if (!response.ok) throw new Error("Erro ao inserir contato.");
   const json = await response.json();
   return json.data;
+}
+
+export async function excluirContato(id: number): Promise<void> {
+  const response = await fetch(`${API_URL}/contatos/${id}`, {
+    method: "DELETE",
+  });
+  if (!response.ok) throw new Error("Erro ao excluir contato.");
 }

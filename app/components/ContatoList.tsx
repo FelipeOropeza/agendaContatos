@@ -1,9 +1,20 @@
 import { useEffect, useState } from "react";
-import { listarContatos, type Contato } from "../api/contato";
+import { listarContatos, excluirContato, type Contato } from "../api/contato";
 
 export default function ContatoList() {
   const [contatos, setContatos] = useState<Contato[]>([]);
   const [loading, setLoading] = useState(true);
+
+  async function handleDelete(id: number) {
+    if (confirm("Tem certeza que deseja excluir este contato?")) {
+      try {
+        await excluirContato(id);
+        setContatos((prev) => prev.filter((contato) => contato.id !== id));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
 
   useEffect(() => {
     listarContatos()
@@ -21,9 +32,8 @@ export default function ContatoList() {
       {contatos.map((contato) => (
         <div
           key={contato.id}
-          className="w-full max-w-md bg-amber-300 p-4 rounded-lg shadow-md flex gap-4"
+          className="w-full max-w-md p-4 rounded-lg shadow-md flex gap-4"
         >
-          {/* Foto (caso exista) */}
           {contato.foto ? (
             <img
               src={contato.foto}
@@ -36,7 +46,6 @@ export default function ContatoList() {
             </div>
           )}
 
-          {/* Dados do contato + ações */}
           <div className="flex-1">
             <h2 className="text-lg font-bold">{contato.nome}</h2>
             <p className="text-sm text-gray-700">📞 {contato.telefone}</p>
@@ -47,12 +56,11 @@ export default function ContatoList() {
               </p>
             )}
 
-            {/* Botões de ação */}
             <div className="flex justify-end mt-4 gap-2">
               <button className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
                 Editar
               </button>
-              <button className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+              <button onClick={() => handleDelete(contato.id)} className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
                 Excluir
               </button>
             </div>

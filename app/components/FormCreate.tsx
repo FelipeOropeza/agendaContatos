@@ -5,14 +5,14 @@ import { useNavigate } from "react-router";
 export default function ContatoForm() {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<Omit<Contato, "id">>({
+  const [formData, setFormData] = useState<Omit<Contato, "id" | "foto">>({
     nome: "",
     telefone: "",
     email: "",
     aniversario: "",
-    foto: "",
   });
 
+  const [fotoFile, setFotoFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,14 +21,29 @@ export default function ContatoForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   }
 
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.files && e.target.files[0]) {
+      setFotoFile(e.target.files[0]);
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      await inserirContato({ ...formData, id: 0 }); // id não é usado no insert
-      navigate("/"); // volta para a lista de contatos
+      const data = new FormData();
+      data.append("nome", formData.nome);
+      data.append("telefone", formData.telefone);
+      data.append("email", formData.email ?? "");
+      data.append("aniversario", formData.aniversario ?? "");
+      if (fotoFile) {
+        data.append("foto", fotoFile);
+      }
+
+      await inserirContato(data);
+      navigate("/");
     } catch (err) {
       setError("Erro ao cadastrar contato. Verifique os dados e tente novamente.");
     } finally {
@@ -37,7 +52,7 @@ export default function ContatoForm() {
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
+    <div className="mt-6 max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
       <h2 className="text-xl font-bold mb-4">Cadastrar Contato</h2>
 
       {error && (
@@ -92,14 +107,12 @@ export default function ContatoForm() {
         </div>
 
         <div>
-          <label className="block font-medium">URL da Foto</label>
+          <label className="block font-medium">Foto</label>
           <input
-            type="text"
-            name="foto"
-            value={formData.foto ?? ""}
-            onChange={handleChange}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
             className="w-full border rounded p-2"
-            placeholder="http://exemplo.com/foto.jpg"
           />
         </div>
 
