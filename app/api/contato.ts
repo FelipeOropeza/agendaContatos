@@ -7,6 +7,7 @@ export type Contato = {
   email: string | null;
   aniversario: string | null;
   foto: string | null;
+  foto_url: string;
 };
 
 export async function listarContatos(): Promise<Contato[]> {

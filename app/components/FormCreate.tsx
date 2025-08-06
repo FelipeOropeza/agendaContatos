@@ -10,6 +10,7 @@ export default function ContatoForm() {
     telefone: "",
     email: "",
     aniversario: "",
+    foto_url: "",
   });
 
   const [fotoFile, setFotoFile] = useState<File | null>(null);

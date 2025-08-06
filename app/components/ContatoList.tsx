@@ -38,7 +38,7 @@ export default function ContatoList() {
         >
           {contato.foto ? (
             <img
-              src={`${CAMINHO_FOTO}${contato.foto}`}
+              src={contato.foto_url}
               alt={`Foto de ${contato.nome}`}
               className="w-16 h-16 rounded-full object-cover border"
             />
