@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { listarContatos, excluirContato, type Contato } from "../api/contato";
 
 export default function ContatoList() {
-  const CAMINHO_FOTO = import.meta.env.VITE_CAMINHO_FOTO;
-
+  const navigate = useNavigate();
   const [contatos, setContatos] = useState<Contato[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -59,7 +59,10 @@ export default function ContatoList() {
             )}
 
             <div className="flex justify-end mt-4 gap-2">
-              <button className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+              <button
+                onClick={() => navigate(`/update/${contato.id}`)}
+                className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+              >
                 Editar
               </button>
               <button

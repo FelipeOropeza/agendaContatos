@@ -33,3 +33,26 @@ export async function excluirContato(id: number): Promise<void> {
   });
   if (!response.ok) throw new Error("Erro ao excluir contato.");
 }
+
+export async function buscarContatoPorId(id: number): Promise<Contato> {
+  const response = await fetch(`${API_URL}/contatos/${id}`);
+  if (!response.ok) throw new Error("Erro ao buscar contato.");
+  const json = await response.json();
+  return json.data;
+}
+
+export async function atualizarContato(
+  id: number,
+  data: FormData
+): Promise<Contato> {
+  const response = await fetch(`${API_URL}/contatos/${id}`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+    },
+    body: data,
+  });
+  if (!response.ok) throw new Error("Erro ao atualizar contato.");
+  const json = await response.json();
+  return json.data;
+}
